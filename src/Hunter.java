@@ -191,4 +191,16 @@ public class Hunter {
         }
         return -1;
     }
+
+    /**
+     * reinitialize the kit to a list full of all items
+     */
+    public boolean testMode() {
+        addItem("Water");
+        addItem("Rope");
+        addItem("Machete");
+        addItem("Horse");
+        addItem("Boat");
+        return true;
+    }
 }
