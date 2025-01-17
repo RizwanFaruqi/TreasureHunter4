@@ -22,8 +22,8 @@ public class Shop {
     // instance variables
     private double markdown;
     private Hunter customer;
-    private boolean samurai;
-    private boolean Sword = false;
+    private boolean samuraiMode;
+    private boolean Sword;
 
     /**
      * The Shop constructor takes in a markdown value and leaves customer null until one enters the shop.
@@ -33,14 +33,16 @@ public class Shop {
     public Shop(double markdown) {
         this.markdown = markdown;
         customer = null; // customer is set in the enter method
+        this.samuraiMode = false;
+        Sword = false;
     }
 
     public Shop(boolean Samurai, double markdown) {
-        samurai = false;
-        Samurai = samurai;
-        if (samurai = true) {
+        this.samuraiMode = Samurai;
+        if (samuraiMode) {
             this.markdown = markdown;
             Sword_cost = 0;
+            Sword = false;
         }
     }    /**
          * Method for entering the shop.
@@ -92,12 +94,29 @@ public class Shop {
      * @return the string representing the shop's items available for purchase and their prices.
      */
     public String inventory() {
-        String str = "Water: " + WATER_COST + " gold\n";
-        str += "Rope: " + ROPE_COST + " gold\n";
-        str += "Machete: " + MACHETE_COST + " gold\n";
-        str += "Horse: " + HORSE_COST + " gold\n";
-        str += "Boat: " + BOAT_COST + " gold\n";
-        str += "Shovel: " + SHOVEL_COST + " gold\n";
+        String str = "";
+        if (samuraiMode) {
+            WATER_COST = 0;
+            ROPE_COST = 0;
+            MACHETE_COST = 0;
+            HORSE_COST = 0;
+            BOAT_COST = 0;
+            Sword_cost = 0;
+            str+= "Sowrd: " + Sword_cost + " gold\n";
+            str += "Water: " + WATER_COST + " gold\n";
+            str += "Rope: " + ROPE_COST + " gold\n";
+            str += "Machete: " + MACHETE_COST + " gold\n";
+            str += "Horse: " + HORSE_COST + " gold\n";
+            str += "Boat: " + BOAT_COST + " gold\n";
+            str += "Shovel: " + SHOVEL_COST + " gold\n";
+        } else {
+            str += "Water: " + WATER_COST + " gold\n";
+            str += "Rope: " + ROPE_COST + " gold\n";
+            str += "Machete: " + MACHETE_COST + " gold\n";
+            str += "Horse: " + HORSE_COST + " gold\n";
+            str += "Boat: " + BOAT_COST + " gold\n";
+            str += "Shovel: " + SHOVEL_COST + " gold\n";
+        }
         return Colors.PURPLE + str + Colors.RESET;
     }
 
@@ -107,7 +126,7 @@ public class Shop {
      * @param item The item being bought.
      */
     public void buyItem(String item) {
-        if (samurai) {
+        if (samuraiMode) {
             WATER_COST = 0;
             ROPE_COST = 0;
             MACHETE_COST = 0;
@@ -183,6 +202,8 @@ public class Shop {
             return BOAT_COST;
         } else if (item.equals("shovel")){
             return SHOVEL_COST;
+        } else if (item.equals("sword")){
+            return Sword_cost;
         } else {
             return 0;
         }

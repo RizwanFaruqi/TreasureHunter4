@@ -83,12 +83,21 @@ Hunter {
      * @return true if the item is successfully bought.
      */
     public boolean buyItem(String item, int costOfItem) {
-        if (costOfItem == 0 || gold < costOfItem || hasItemInKit(item)) {
+        if ((costOfItem == 0 && !isSamurai()) || gold < costOfItem || hasItemInKit(item)) {
             return false;
         }
         gold -= costOfItem;
         addItem(item);
         return true;
+    }
+
+    public boolean hasSword () {
+        for (int i = 0; i < kit.length && kit[i] != null; i++) {
+            if (kit[i].equals("sword")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
