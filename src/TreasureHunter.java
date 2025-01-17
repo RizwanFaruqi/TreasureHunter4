@@ -96,8 +96,8 @@ public class TreasureHunter {
      * Creates a new town and adds the Hunter to it.
      */
     private void enterTown() {
-        double markdown = 0.25;
-        double toughness = 0.4;
+        double markdown = 0;
+        double toughness = 0;
         if (hardMode) {
             // in hard mode, you get less money back when you sell items
             markdown = 0.25;
@@ -179,7 +179,7 @@ public class TreasureHunter {
         } else if (choice.equals("l")) {
             currentTown.lookForTrouble();
         } else if (choice.equals("d")) {
-            currentTown.Dig();
+            System.out.println(currentTown.Dig());
         } else if (choice.equals("x")) {
             System.out.println("Fare thee well, " + hunter.getHunterName() + "!");
         } else if (choice.equals("h")) {
@@ -188,11 +188,6 @@ public class TreasureHunter {
             System.out.println("Yikes! That's an invalid option! Try again.");
         }
     }
-
-
-
-
-
     public boolean isEasyMode() {
         return easyMode;
     }
