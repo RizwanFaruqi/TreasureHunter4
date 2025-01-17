@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Hunter Class<br /><br />
  * This class represents the treasure hunter character (the player) in the Treasure Hunt game.
@@ -8,8 +10,11 @@ public class Hunter {
     //instance variables
     private String hunterName;
     private String[] kit;
-    private int gold;
-
+    private  int gold;
+    private String[] treasureFound;
+    private String[] checkedList;
+    int num;
+    List<String> myList;
     /**
      * The base constructor of a Hunter assigns the name to the hunter and an empty kit.
      *
@@ -17,11 +22,21 @@ public class Hunter {
      * @param startingGold The gold the hunter starts with.
      */
     public Hunter(String hunterName, int startingGold) {
+        myList = new ArrayList<>();
         this.hunterName = hunterName;
-        kit = new String[6]; // only 6 possible items can be stored in kit
+        kit = new String[7]; // only 6 possible items can be stored in kit
         gold = startingGold;
+        num = 0;
+        checkedList = new String[3];
+        treasureFound = new String[4];
+        treasureFound[0] = "crown";
+        treasureFound[1] = "dust";
+        treasureFound[2] = "trophy";
+        treasureFound[3] = "gem";
+        checkedList[0] = "";
+        checkedList[1] = "";
+        checkedList[2] = "";
     }
-
     //Accessors
     public String getHunterName() {
         return hunterName;
@@ -34,10 +49,8 @@ public class Hunter {
      */
     public void changeGold(int modifier) {
         gold += modifier;
-        if (gold < 0) {
-            gold = 0;
-        }
     }
+
 
     /**
      * Buys an item from a shop.
@@ -135,7 +148,6 @@ public class Hunter {
         }
         return printableKit;
     }
-
     /**
      * @return A string representation of the hunter.
      */
@@ -146,7 +158,6 @@ public class Hunter {
         }
         return str;
     }
-
     /**
      * Searches kit Array for the index of the specified value.
      *
@@ -163,7 +174,6 @@ public class Hunter {
         }
         return -1;
     }
-
     /**
      * Check if the kit is empty - meaning all elements are null.
      *
@@ -177,7 +187,6 @@ public class Hunter {
         }
         return true;
     }
-
     /**
      * Finds the first index where there is a null value.
      *
@@ -191,7 +200,6 @@ public class Hunter {
         }
         return -1;
     }
-
     /**
      * reinitialize the kit to a list full of all items
      */
@@ -202,6 +210,34 @@ public class Hunter {
         addItem("Horse");
         addItem("Boat");
         addItem("Boots");
+        addItem("Shovel");
         return true;
     }
+    public int getGold() {
+        return gold;
+    }
+    public void treasureCollected(String item) {
+
+
+        String elementToAdd = item;
+        if (!myList.contains(elementToAdd)) {
+            myList.add(elementToAdd);
+            System.out.println("You found " + item +"!");
+        }
+
+//        //int counter = 0;
+//        if (!item.equals("dust")) {
+//            for (int i=0; i< checkedList.length; i++) {
+//                if (checkedList[i].equals(item)) {
+//                    counter++;
+//                }
+//            }
+//            if (counter==0) {
+//                checkedList[num] = item;
+//                num++;
+//            }
+//            System.out.println("You found " + item +"!");
+//        } else {
+//            System.out.println("You found dust!");
+        }
 }

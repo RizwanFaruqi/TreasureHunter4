@@ -11,6 +11,10 @@ public class Town {
     private Terrain terrain;
     private String printMessage;
     private boolean toughTown;
+    private boolean gameLost;
+    private boolean goldFound;
+    private String[] str;
+    private boolean searched;
 
     /**
      * The Town Constructor takes in a shop and the surrounding terrain, but leaves the hunter as null until one arrives.
@@ -19,25 +23,44 @@ public class Town {
      * @param toughness The surrounding terrain.
      */
     public Town(Shop shop, double toughness) {
+        searched = false;
         this.shop = shop;
         this.terrain = getNewTerrain();
-
         // the hunter gets set using the hunterArrives method, which
         // gets called from a client class
+        goldFound = false;
         hunter = null;
         printMessage = "";
-
         // higher toughness = more likely to be a tough town
         toughTown = (Math.random() < toughness);
+        str = new String[4];
+        str[0] = "crown";
+        str[1] = "trophy";
+        str[2] = "dust";
+        str[3] = "gem";
+    }
+
+    public String treasureSelector() {
+        int rand = (int) (Math.random() *4);
+        return str[rand];
+    }
+
+    public void lookForTreasure() {
+        if (!searched) {
+            hunter.treasureCollected(treasureSelector());
+            searched = true;
+        } else {
+            System.out.println("You cant hunt anymore!");
+        }
     }
 
     public Terrain getTerrain() {
         return terrain;
     }
-
     public String getLatestNews() {
         return printMessage;
     }
+
 
     /**
      * Assigns an object to the Hunter in town.
@@ -90,33 +113,38 @@ public class Town {
      * The tougher the town, the easier it is to find a fight, and the harder it is to win one.
      */
     public void lookForTrouble() {
-        double noTroubleChance;
-        if (toughTown) {
-            noTroubleChance = 0.66;
-        } else {
-            noTroubleChance = 0.33;
-        }
-        if (Math.random() > noTroubleChance) {
-            printMessage = "You couldn't find any trouble";
-        } else {
-            printMessage = Colors.RED + "You want trouble, stranger!  You got it!\nOof! Umph! Ow!" + Colors.RESET + "\n";
-            int goldDiff = (int) (Math.random() * 10) + 1;
-            if (Math.random() > noTroubleChance) {
-                printMessage += "Okay, stranger! You proved yer mettle. Here, take my gold.";
-                printMessage += "\nYou won the brawl and receive " + Colors.YELLOW + goldDiff + Colors.RESET + " gold.";
-                hunter.changeGold(goldDiff);
+            double noTroubleChance;
+            if (toughTown) {
+                noTroubleChance = 0.66;
             } else {
-                printMessage += "That'll teach you to go lookin' fer trouble in MY town! Now pay up!";
-                printMessage += "\nYou lost the brawl and pay " + Colors.YELLOW + goldDiff + Colors.RESET + " gold.";
-                hunter.changeGold(-goldDiff);
+                noTroubleChance = 0.33;
             }
-        }
-    }
-
+            if (Math.random() > noTroubleChance) {
+                printMessage = "You couldn't find any trouble";
+            } else {
+                printMessage = Colors.RED + "You want trouble, stranger!  You got it!\nOof! Umph! Ow!" + Colors.RESET + "\n";
+                int goldDiff = (int) (Math.random() * 10) + 1;
+                if (Math.random() > noTroubleChance) {
+                    printMessage += "Okay, stranger! You proved yer mettle. Here, take my gold.";
+                    printMessage += "\nYou won the brawl and receive " + Colors.YELLOW + goldDiff + Colors.RESET + " gold.";
+                    hunter.changeGold(goldDiff);
+                } else {
+                    printMessage += "That'll teach you to go lookin' fer trouble in MY town! Now pay up!";
+                    printMessage += "\nYou lost the brawl and pay " + Colors.YELLOW + goldDiff + Colors.RESET + " gold.";
+                    hunter.changeGold(-goldDiff);
+                    if (hunter.getGold() < 0) {
+                        gameLost = true;
+                    } else {
+                        gameLost = false;
+                    }
+                }
+            }}
     public String infoString() {
         return "This nice little town is surrounded by " + terrain.getTerrainName() + ".";
     }
-
+    public boolean isGameLost() {
+        return gameLost;
+    }
     /**
      * Determines the surrounding terrain for a town, and the item needed in order to cross that terrain.
      *
@@ -147,5 +175,23 @@ public class Town {
     public static boolean checkItemBreak() {
         double rand = Math.random();
         return (rand < 0.5);
+    }
+
+    public String Dig() {
+        if (hunter.hasItemInKit("shovel") && !goldFound) {
+            double rand = Math.random();
+            int digGold= 1;
+            if (rand<0.5) {
+                goldFound = true;
+                //digGold = (int) (Math.random()*20)+1;
+                hunter.changeGold(digGold);
+                return "You dug up " + digGold + "gold!";
+            } else {
+                goldFound = true;
+                return "You dug but only found dirt!";
+            }
+        } else {
+            return "You cant dig for gold without a shovel!";
+        }
     }
 }
