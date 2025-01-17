@@ -113,12 +113,26 @@ public class Town {
      * The tougher the town, the easier it is to find a fight, and the harder it is to win one.
      */
     public void lookForTrouble() {
-            double noTroubleChance;
-            if (toughTown) {
-                noTroubleChance = 0.66;
+        double noTroubleChance;
+        if (toughTown) {
+            noTroubleChance = 0.66;
+        } else {
+            noTroubleChance = 0.33;
+        }
+        if (hunter.isSamurai()) {
+            if (Math.random() > noTroubleChance) {
+                printMessage = "You couldn't find any trouble";
             } else {
-                noTroubleChance = 0.33;
+                printMessage = Colors.RED + "You want trouble, stranger!  You got it!\nOof! Umph! Ow!" + Colors.RESET + "\n";
+                int goldDiff = (int) (Math.random() * 10) + 1;
+                if (Math.random() > noTroubleChance) {
+                    printMessage += "Okay, stranger! You proved yer mettle. Here, take my gold.";
+                    printMessage += "You have slain your enemy, mighty samurai!!";
+                    printMessage += "\nYou won the brawl and receive " + Colors.YELLOW + goldDiff + Colors.RESET + " gold.";
+                    hunter.changeGold(goldDiff);
+                }
             }
+        } else {
             if (Math.random() > noTroubleChance) {
                 printMessage = "You couldn't find any trouble";
             } else {
@@ -138,7 +152,9 @@ public class Town {
                         gameLost = false;
                     }
                 }
-            }}
+            }
+        }
+    }
     public String infoString() {
         return "This nice little town is surrounded by " + terrain.getTerrainName() + ".";
     }

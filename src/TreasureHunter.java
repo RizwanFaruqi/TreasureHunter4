@@ -66,9 +66,9 @@ public class TreasureHunter {
         String name = SCANNER.nextLine().toLowerCase();
 
         // set hunter instance variable
-        hunter = new Hunter(name, 20);
+        hunter = new Hunter(samuraiMode, name, 20);
 
-        System.out.print("Easy mode (e), Normal Mode (n), Hard Mode (h), Test Mode (t)?");
+        System.out.print("Easy mode (e), Normal Mode (n), Hard Mode (h), Test Mode (t)? ");
         String hard = SCANNER.nextLine().toLowerCase();
         if (hard.equals("e")) {
             easyMode = true;
@@ -80,6 +80,7 @@ public class TreasureHunter {
             hardMode = true;
         } else if (hard.equals("s")){
             samuraiMode = true;
+            hunter = new Hunter(samuraiMode, name, 20);
         } else if (hard.equals("t")) {
             testMode = true;
         }
@@ -118,7 +119,12 @@ public class TreasureHunter {
         // note that we don't need to access the Shop object
         // outside of this method, so it isn't necessary to store it as an instance
         // variable; we can leave it as a local variable
-        Shop shop = new Shop(markdown);
+        Shop shop;
+        if (samuraiMode) {
+            shop = new Shop(samuraiMode, markdown);
+        } else {
+            shop = new Shop(markdown);
+        }
 
         // creating the new Town -- which we need to store as an instance
         // variable in this class, since we need to access the Town
@@ -157,8 +163,15 @@ public class TreasureHunter {
             System.out.print("What's your next move? ");
             choice = SCANNER.nextLine().toLowerCase();
             processChoice(choice);
+            if (hunter.winGame()) {
+                break;
+            }
         }
-        System.out.println("Games Over!");
+        if (hunter.winGame()) {
+            System.out.println("You win congratulations!!");
+        } else if (currentTown.isGameLost()) {
+            System.out.println("Games Over you lose!");
+        }
     }
 
     /**

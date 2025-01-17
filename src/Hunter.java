@@ -6,7 +6,8 @@ import java.util.List;
  * This code has been adapted from Ivan Turner's original program -- thank you Mr. Turner!
  */
 
-public class Hunter {
+public class
+Hunter {
     //instance variables
     private String hunterName;
     private String[] kit;
@@ -15,31 +16,53 @@ public class Hunter {
     private String[] checkedList;
     int num;
     List<String> myList;
+    private boolean samurai;
     /**
      * The base constructor of a Hunter assigns the name to the hunter and an empty kit.
      *
      * @param hunterName The hunter's name.
      * @param startingGold The gold the hunter starts with.
      */
-    public Hunter(String hunterName, int startingGold) {
-        myList = new ArrayList<>();
-        this.hunterName = hunterName;
-        kit = new String[7]; // only 6 possible items can be stored in kit
-        gold = startingGold;
-        num = 0;
-        checkedList = new String[3];
-        treasureFound = new String[4];
-        treasureFound[0] = "crown";
-        treasureFound[1] = "dust";
-        treasureFound[2] = "trophy";
-        treasureFound[3] = "gem";
-        checkedList[0] = "";
-        checkedList[1] = "";
-        checkedList[2] = "";
+    public Hunter(Boolean samurai, String hunterName, int startingGold) {
+        if (samurai) {
+            myList = new ArrayList<>();
+            this.hunterName = hunterName;
+            kit = new String[8]; // only 6 possible items can be stored in kit
+            gold = startingGold;
+            num = 0;
+            checkedList = new String[3];
+            treasureFound = new String[4];
+            treasureFound[0] = "crown";
+            treasureFound[1] = "dust";
+            treasureFound[2] = "trophy";
+            treasureFound[3] = "gem";
+            checkedList[0] = "";
+            checkedList[1] = "";
+            checkedList[2] = "";
+        } else {
+            myList = new ArrayList<>();
+            this.hunterName = hunterName;
+            kit = new String[7]; // only 6 possible items can be stored in kit
+            gold = startingGold;
+            num = 0;
+            checkedList = new String[3];
+            treasureFound = new String[4];
+            treasureFound[0] = "crown";
+            treasureFound[1] = "dust";
+            treasureFound[2] = "trophy";
+            treasureFound[3] = "gem";
+            checkedList[0] = "";
+            checkedList[1] = "";
+            checkedList[2] = "";
+        }
     }
     //Accessors
     public String getHunterName() {
         return hunterName;
+    }
+
+    public boolean isSamurai() {
+        return samurai;
     }
 
     /**
@@ -264,5 +287,12 @@ public class Hunter {
 //            System.out.println("You found " + item +"!");
 //        } else {
 //            System.out.println("You found dust!");
+    }
+
+    public boolean winGame() {
+        if (myList.contains("gem") && myList.contains("crown") && myList.contains("trophy")) {
+            return true;
         }
+        return false;
+    }
 }

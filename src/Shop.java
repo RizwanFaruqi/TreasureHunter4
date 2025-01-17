@@ -113,6 +113,7 @@ public class Shop {
             MACHETE_COST = 0;
             HORSE_COST = 0;
             BOAT_COST = 0;
+            Sword_cost = 0;
             int costOfItem = checkMarketPrice(item, true);
             if (customer.buyItem(item, costOfItem)) {
                 System.out.println("Ye' got yerself a " + item + ". Come again soon.");
