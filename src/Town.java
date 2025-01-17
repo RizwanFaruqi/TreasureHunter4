@@ -180,18 +180,20 @@ public class Town {
     public String Dig() {
         if (hunter.hasItemInKit("shovel") && !goldFound) {
             double rand = Math.random();
-            int digGold= 1;
+            int digGold= 0;
             if (rand<0.5) {
                 goldFound = true;
-                //digGold = (int) (Math.random()*20)+1;
+                digGold = (int) (Math.random()*20)+1;
                 hunter.changeGold(digGold);
                 return "You dug up " + digGold + "gold!";
             } else {
                 goldFound = true;
                 return "You dug but only found dirt!";
             }
-        } else {
+        } else if (!hunter.hasItemInKit("shovel")) {
             return "You cant dig for gold without a shovel!";
+        } else {
+            return "You already have gold in this town, no greedy";
         }
     }
 }
