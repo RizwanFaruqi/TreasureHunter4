@@ -25,6 +25,7 @@ Hunter {
      */
     public Hunter(Boolean samurai, String hunterName, int startingGold) {
         if (samurai) {
+            this.samurai = samurai;
             myList = new ArrayList<>();
             this.hunterName = hunterName;
             kit = new String[8]; // only 6 possible items can be stored in kit
@@ -82,6 +83,8 @@ Hunter {
      * @param costOfItem The cost of the item.
      * @return true if the item is successfully bought.
      */
+
+
     public boolean buyItem(String item, int costOfItem) {
         if ((costOfItem == 0 && !isSamurai()) || gold < costOfItem || hasItemInKit(item)) {
             return false;
@@ -184,7 +187,7 @@ Hunter {
         String printableTreasure = "";
         String space = " ";
         for (String treasure : myList) {
-            if (treasure != null) {
+            if (treasure != null && !treasure.equals("dust")) {
                 printableTreasure += treasure + space;
             }
         }

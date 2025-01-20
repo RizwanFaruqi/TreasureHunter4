@@ -8,7 +8,6 @@ import java.util.Scanner;
  *
  * This code has been adapted from Ivan Turner's original program -- thank you Mr. Turner!
  */
-
 public class TreasureHunter {
     // static variables
     private static final Scanner SCANNER = new Scanner(System.in);
@@ -21,8 +20,6 @@ public class TreasureHunter {
     private boolean normalMode;
     private boolean itemCanBreak;
     private boolean samuraiMode;
-
-
     /**
      * Constructs the Treasure Hunter game.
      */
@@ -110,7 +107,6 @@ public class TreasureHunter {
          else if (easyMode) {
             markdown =1;
             toughness = 0.25;
-
         }
          else if (normalMode) {
             markdown =0.5;
@@ -119,14 +115,12 @@ public class TreasureHunter {
         // note that we don't need to access the Shop object
         // outside of this method, so it isn't necessary to store it as an instance
         // variable; we can leave it as a local variable
-
         Shop shop;
         if (samuraiMode) {
             shop = new Shop(samuraiMode, markdown);
         } else {
             shop = new Shop(markdown);
         }
-
         // creating the new Town -- which we need to store as an instance
         // variable in this class, since we need to access the Town
         // object in other methods of this class

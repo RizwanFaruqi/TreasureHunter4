@@ -15,16 +15,15 @@ public class Shop {
     private static  int HORSE_COST = 12;
     private static  int BOAT_COST = 20;
     private static  int SHOVEL_COST = 8;
-    private static int Sword_cost;
+    private static int Sword_cost =0;
+    private static int BOOTS_COST =6;
     // static variables
     private static final Scanner SCANNER = new Scanner(System.in);
-
     // instance variables
     private double markdown;
     private Hunter customer;
     private boolean samuraiMode;
     private boolean Sword;
-
     /**
      * The Shop constructor takes in a markdown value and leaves customer null until one enters the shop.
      *
@@ -34,9 +33,7 @@ public class Shop {
         this.markdown = markdown;
         customer = null; // customer is set in the enter method
         this.samuraiMode = false;
-        Sword = false;
     }
-
     public Shop(boolean Samurai, double markdown) {
         this.samuraiMode = Samurai;
         if (samuraiMode) {
@@ -60,15 +57,12 @@ public class Shop {
             System.out.print("What're you lookin' to buy? ");
             String item = SCANNER.nextLine().toLowerCase();
             int cost = checkMarketPrice(item, true);
-            if (cost == 0) {
-                System.out.println("We ain't got none of those.");
-            } else {
-                System.out.print("It'll cost you " + cost + " gold. Buy it (y/n)? ");
-                String option = SCANNER.nextLine().toLowerCase();
-                if (option.equals("y")) {
-                    buyItem(item);
-                }
+            System.out.print("It'll cost you " + cost + " gold. Buy it (y/n)? ");
+            String option = SCANNER.nextLine().toLowerCase();
+            if (option.equals("y")) {
+                buyItem(item);
             }
+
         } else  {
             System.out.println("What're you lookin' to sell? ");
             System.out.print("You currently have the following items: " + Colors.PURPLE + customer.getInventory() + Colors.RESET);
@@ -95,20 +89,32 @@ public class Shop {
      */
     public String inventory() {
         String str = "";
-        if (samuraiMode) {
+        if (samuraiMode && customer.hasSword()) {
             WATER_COST = 0;
             ROPE_COST = 0;
             MACHETE_COST = 0;
             HORSE_COST = 0;
             BOAT_COST = 0;
             Sword_cost = 0;
-            str+= "Sowrd: " + Sword_cost + " gold\n";
+            SHOVEL_COST = 0;
+            BOOTS_COST = 0;
+            str+= "Sword: " + Sword_cost + " gold\n";
             str += "Water: " + WATER_COST + " gold\n";
             str += "Rope: " + ROPE_COST + " gold\n";
             str += "Machete: " + MACHETE_COST + " gold\n";
             str += "Horse: " + HORSE_COST + " gold\n";
             str += "Boat: " + BOAT_COST + " gold\n";
             str += "Shovel: " + SHOVEL_COST + " gold\n";
+            str+= "Boots: " + BOOTS_COST + "gold\n";
+        } else if (samuraiMode){
+            str += "Water: " + WATER_COST + " gold\n";
+            str += "Rope: " + ROPE_COST + " gold\n";
+            str += "Machete: " + MACHETE_COST + " gold\n";
+            str += "Horse: " + HORSE_COST + " gold\n";
+            str += "Boat: " + BOAT_COST + " gold\n";
+            str += "Shovel: " + SHOVEL_COST + " gold\n";
+            str+= "Sword " + Sword_cost + " gold\n";
+            str+= "Boots " + BOOTS_COST + " gold\n";
         } else {
             str += "Water: " + WATER_COST + " gold\n";
             str += "Rope: " + ROPE_COST + " gold\n";
@@ -116,6 +122,7 @@ public class Shop {
             str += "Horse: " + HORSE_COST + " gold\n";
             str += "Boat: " + BOAT_COST + " gold\n";
             str += "Shovel: " + SHOVEL_COST + " gold\n";
+            str+= "Boots: " + BOOTS_COST + " gold\n";
         }
         return Colors.PURPLE + str + Colors.RESET;
     }
@@ -126,13 +133,15 @@ public class Shop {
      * @param item The item being bought.
      */
     public void buyItem(String item) {
-        if (samuraiMode) {
+        if (customer.hasSword()) {
             WATER_COST = 0;
             ROPE_COST = 0;
             MACHETE_COST = 0;
             HORSE_COST = 0;
             BOAT_COST = 0;
             Sword_cost = 0;
+            BOOTS_COST = 0;
+            SHOVEL_COST = 0;
             int costOfItem = checkMarketPrice(item, true);
             if (customer.buyItem(item, costOfItem)) {
                 System.out.println("Ye' got yerself a " + item + ". Come again soon.");
@@ -145,6 +154,8 @@ public class Shop {
             MACHETE_COST = 6;
             HORSE_COST = 12;
             BOAT_COST = 20;
+            SHOVEL_COST = 8;
+            BOOTS_COST = 6;
             int costOfItem = checkMarketPrice(item, true);
             if (customer.buyItem(item, costOfItem)) {
                 System.out.println("Ye' got yerself a " + item + ". Come again soon.");
@@ -204,6 +215,8 @@ public class Shop {
             return SHOVEL_COST;
         } else if (item.equals("sword")){
             return Sword_cost;
+        } else if (item.equals("boots")) {
+            return BOOTS_COST;
         } else {
             return 0;
         }
